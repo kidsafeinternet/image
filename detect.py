@@ -67,11 +67,14 @@ def tojson(path):
 def show_result(image_path, result):
     image = Image.open(image_path)
     censored_image = image.copy()
+    censored_image_path = "censored/" + image_path.split("/")[-1]
     
-    if blurred:
-        blur(censored_image, result, "censored/" + image_path.split("/")[-1])
+    if blurred and noc != 0:
+        blur(censored_image, result, censored_image_path)
     
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
+    else:
+        fig, ax1 = plt.subplots(1, 1, figsize=(6, 6))
     
     # Original image with detection results
     ax1.imshow(image)
@@ -79,32 +82,28 @@ def show_result(image_path, result):
         x, y, w, h = r["box"]
         if r["class"] in ok_classes:
             rect = patches.Rectangle(
-                (x, y), w, h, linewidth=1, edgecolor="g", facecolor="none"
+                (x, y), w, h, linewidth=5, edgecolor="g", facecolor="none"
             )
         else:
             rect = patches.Rectangle(
-                (x, y), w, h, linewidth=1, edgecolor="r", facecolor="none"
+                (x, y), w, h, linewidth=5, edgecolor="r", facecolor="none"
             )
         ax1.add_patch(rect)
     ax1.set_title('Original Image with Detections')
-    
-    # Reload the censored image to ensure it is correctly updated
-    if blurred:
-        censored_image = Image.open("censored/" + image_path.split("/")[-1])
 
-    # Censored image
-    ax2.imshow(censored_image)
-    ax2.set_title('Censored Image')
-    
+    # Check if the censored image exists
+    if blurred and noc != 0 and os.path.exists(censored_image_path):
+        censored_image = Image.open(censored_image_path)
+        ax2.imshow(censored_image)
+        ax2.set_title('Censored Image')
+
     plt.show()
 
 
 def score(result):
     global noc
-    # 0 - 1 score for the image. 0 means no nudity, 1 means full nudity
-    # Use not_ok_classes to penalize the score
     if not result:
-        return 0.5  # Default score when there are no results
+        return 0  # Default score when there are no results
 
     score = 0
     ok_count = 0
