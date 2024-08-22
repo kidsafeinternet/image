@@ -4,6 +4,7 @@ import urllib.request
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 
 class dataset:
@@ -34,10 +35,7 @@ class dataset:
         # Check if subdir of 'small_set' exists, if not, create it
         if not os.path.exists(f"{dir}/{subdir}"):
             os.makedirs(f"{dir}/{subdir}")
-        # Set up Selenium WebDriver
-        options = webdriver.ChromeOptions()
-        options.add_argument("--headless")  # Run in headless mode
-        driver = webdriver.Chrome(options=options)
+        driver = webdriver.Chrome()
 
         # Load the webpage
         driver.get(url)
@@ -50,6 +48,17 @@ class dataset:
         urls = [
             img.get_attribute("src") for img in img_tags if img.get_attribute("src")
         ]
+
+        # Scroll until enough images are found
+        while len(urls) < n:
+            driver.find_element(By.TAG_NAME, "body").send_keys(Keys.END)
+            time.sleep(2)  # Wait for new images to load
+            img_tags = driver.find_elements(By.TAG_NAME, "img")
+            new_urls = [
+                img.get_attribute("src") for img in img_tags if img.get_attribute("src")
+            ]
+            urls.extend(new_urls)
+            urls = list(set(urls))  # Remove duplicates
 
         driver.quit()
 
