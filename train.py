@@ -3,6 +3,7 @@ os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '1'
 
 from fastai.vision.all import *
 import argparse
+import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train a model')
@@ -31,8 +32,12 @@ if __name__ == "__main__":
     # Train the model
     learn.fine_tune(5)  # Fine-tune for 5 epochs
 
-    # Evaluate the model
-    learn.show_results()
+    # Show the confusion matrix
+    interp = ClassificationInterpretation.from_learner(learn)
+    interp.plot_confusion_matrix()
+    
+    # Download the confusion matrix
+    plt.savefig('matrixes/' + dataset + '_confusion_matrix.png')
 
     # Save the model
     learn.export(dataset + '_model.pkl')

@@ -32,7 +32,7 @@ class dataset:
     def crawl(self, url, subdir):
         dir = self.directory
         n = self.n
-        # Check if subdir of 'small_set' exists, if not, create it
+        # Check if subdir exists, if not create it
         if not os.path.exists(f"{dir}/{subdir}"):
             os.makedirs(f"{dir}/{subdir}")
         driver = webdriver.Chrome()
