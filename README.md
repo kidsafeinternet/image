@@ -2,7 +2,7 @@
 NSFW/SFW Image classification.
 
 ## Confusion
-All of the datasets were run on 5 epochs.
+All of the datasets were run on 5 epochs and 20% of the data was used for validation.
 
 ### Small Dataset
 5 images of each class. 10 images total.
