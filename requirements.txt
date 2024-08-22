@@ -1,0 +1,4 @@
+fastai
+torch
+selenium
+matplotlib
