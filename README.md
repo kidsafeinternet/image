@@ -1,2 +1,2 @@
 # image
- NSFW/SFW Image classification.
+NSFW/SFW Image classification.
