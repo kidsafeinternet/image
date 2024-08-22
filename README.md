@@ -17,4 +17,4 @@ All of the datasets were run on 5 epochs and 20% of the data was used for valida
 ### Large Dataset
 500 images of each class. 1000 images total.
 
-***The large dataset confusion matrix is not available yet.***
+![Large Dataset Confusion Matrix](matrixes/large_set_confusion_matrix.png)
