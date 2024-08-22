@@ -1,4 +1,5 @@
-fastai
-torch
-selenium
-matplotlib
+# Tested on these versions
+fastai==2.7.16
+torch==2.2.2
+selenium==4.21.0
+matplotlib==3.8.4
