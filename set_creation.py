@@ -5,7 +5,8 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-
+import threading
+from tqdm import tqdm
 
 class dataset:
     def __init__(self, directory, n):
@@ -29,6 +30,14 @@ class dataset:
                     except Exception as e:
                         print(f"Failed to delete {file_path}. Reason: {e}")
 
+    def download_image(self, img_url, filename, subdir, pbar):
+        try:
+            urllib.request.urlretrieve(img_url, filename)
+            shutil.move(filename, f"{self.directory}/{subdir}")
+            pbar.update(1)
+        except Exception as e:
+            print(f"Failed to download {img_url}. Reason: {e}")
+
     def crawl(self, url, subdir):
         dir = self.directory
         n = self.n
@@ -43,33 +52,28 @@ class dataset:
         # Wait for the page to load
         time.sleep(2)
 
-        # Extract image URLs
-        img_tags = driver.find_elements(By.TAG_NAME, "img")
-        urls = [
-            img.get_attribute("src") for img in img_tags if img.get_attribute("src")
-        ]
+        # Progress bar
+        with tqdm(total=n) as pbar:
+            threads = []
 
-        # Scroll until enough images are found
-        while len(urls) < n:
-            driver.find_element(By.TAG_NAME, "body").send_keys(Keys.END)
-            time.sleep(2)  # Wait for new images to load
-            img_tags = driver.find_elements(By.TAG_NAME, "img")
-            new_urls = [
-                img.get_attribute("src") for img in img_tags if img.get_attribute("src")
-            ]
-            urls.extend(new_urls)
-            urls = list(set(urls))  # Remove duplicates
+            # Extract image URLs and download concurrently
+            while len(threads) < n:
+                img_tags = driver.find_elements(By.TAG_NAME, "img")
+                for img in img_tags:
+                    img_url = img.get_attribute("src")
+                    if img_url and len(threads) < n:
+                        filename = f"img{len(threads)}.jpg"
+                        thread = threading.Thread(target=self.download_image, args=(img_url, filename, subdir, pbar))
+                        threads.append(thread)
+                        thread.start()
 
-        driver.quit()
+                driver.find_element(By.TAG_NAME, "body").send_keys(Keys.END)
+                time.sleep(2)  # Wait for new images to load
 
-        if len(urls) < n:
-            print(f"Not enough images found on {url}. Found {len(urls)} images.")
-            return
+            driver.quit()
 
-        for i in range(n):
-            img = urls[i]
-            filename = "img" + str(i) + ".jpg"
-            urllib.request.urlretrieve(img, filename)
-            shutil.move(filename, f"{dir}/" + subdir)
-            print(f"Image {i} downloaded")
+            # Wait for all threads to complete
+            for thread in threads:
+                thread.join()
+
         print("Crawl complete")
