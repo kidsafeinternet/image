@@ -23,3 +23,17 @@ All of the datasets were run on 5 epochs and 20% of the data was used for valida
 10,000 images of each class. 20,000 images total.
 
 ![XL Dataset Confusion Matrix](matrixes/xl_set_confusion_matrix.png)
+
+## Models
+
+### Small
+NONE
+
+### Medium
+[zanderlewis/nsfw_medium](https://huggingface.co/zanderlewis/nsfw_medium)
+
+### Large
+NONE YET
+
+### XL
+[zanderlewis/nsfw_xl](https://huggingface.co/zanderlewis/nsfw_xl)
