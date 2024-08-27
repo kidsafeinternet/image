@@ -1,6 +1,11 @@
 # image
 NSFW/SFW Image classification.
 
+## Table of Contents
+- [Confusion](#confusion)
+- [Models](#models)
+- [Datasets](#datasets)
+
 ## Confusion
 All of the datasets were run on 5 epochs and 20% of the data was used for validation. For all of the datasets above the large dataset, 5% of the data was used for validation. 
 
@@ -37,3 +42,17 @@ NONE YET
 
 ### XL
 [zanderlewis/nsfw_xl](https://huggingface.co/zanderlewis/nsfw_xl)
+
+## Datasets
+
+### Small
+NONE
+
+### Medium
+[zanderlewis/nsfw_detection_medium](https://huggingface.co/datasets/zanderlewis/nsfw_detection_medium)
+
+### Large
+[zanderlewis/nsfw_detection_large](https://huggingface.co/datasets/zanderlewis/nsfw_detection_large)
+
+### XL
+[zanderlewis/nsfw_detection_xl](https://huggingface.co/datasets/zanderlewis/nsfw_detection_xl)
