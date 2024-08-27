@@ -7,6 +7,8 @@ NSFW/SFW Image classification.
 - [Datasets](#datasets)
 
 ## Confusion
+[^ BACK TO TOP ^](#image)
+
 All of the datasets were run on 5 epochs and 20% of the data was used for validation. For all of the datasets above the large dataset, 5% of the data was used for validation. 
 
 ### Small Dataset
@@ -30,6 +32,7 @@ All of the datasets were run on 5 epochs and 20% of the data was used for valida
 ![XL Dataset Confusion Matrix](matrixes/xl_set_confusion_matrix.png)
 
 ## Models
+[^ BACK TO TOP ^](#image)
 
 ### Small
 NONE
@@ -44,6 +47,7 @@ NONE YET
 [zanderlewis/nsfw_xl](https://huggingface.co/zanderlewis/nsfw_xl)
 
 ## Datasets
+[^ BACK TO TOP ^](#image)
 
 ### Small
 NONE
